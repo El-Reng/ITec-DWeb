@@ -1,40 +1,19 @@
-# Reto 3 | Maquetar la Home de un producto digital
+# Reto 4 | Upgradeando el Reto 3
 
-Trabajo Integrador: HTML Semántico, CSS Variables y Flexbox
+Evolución de la Home de Nuestro Producto Digital
 
-🧭 Introducción:
+    Contexto: El cliente quedó encantado con la maquetación inicial que realizaste en el Reto 3! Sin embargo, al intentar abrir la página web desde su teléfono celular, notó que el texto se ve diminuto y las tres tarjetas de beneficios se desbordan de la pantalla. Además, siente que el sitio se comporta de manera muy rígida y "estática" al pasar el mouse por los botones.
 
-Un cliente nos solicita que creemos el sitio web para su nuevo producto digital. Ya contamos con un diseño base (Layout), pero ahora debemos profesionalizar el código asegurando que sea escalable, ordenado y moderno.
+    Objetivo del Mini Reto: Tomando como base exacta el código HTML y CSS que escribiste para el Reto 3, deberás aplicar los conceptos de la Clase 7 para transformar esa página estática en un sitio web completamente Responsive (usando un sistema de grillas bajo la filosofía Mobile-First) y agregarle dinamismo mediante Micro-interacciones fluidas.
 
-🧰 Instrucciones Iniciales:
+ Nuevos Requisitos Técnicos Obligatorios
 
-El objetivo es maquetar la página de inicio (Index) basándote en las imágenes de referencia.
-    -Requisito Principal: Todo el diseño debe ser construido utilizando Flexbox.
-    -Mantenibilidad: El uso de variables es obligatorio para evitar repetir códigos de color.
+    Para dar por aprobado este upgrade del proyecto, tu código deberá incorporar las siguientes implementaciones técnicas:
 
-💡 Consejos:
+    1. Habilitación Móvil: Incorporar de forma obligatoria el meta tag viewport en el encabezado del HTML.
 
-    En el siguiente link encontrarás los materiales que necesitas para resolver éste reto:
-    🔗 IMÁGENES PARA RETOS
-    En la tarea de Classroom dejo adjuntos 2 links para ampliar conocimientos acerca de la manipulación de imágenes que te serán de utilidad.
+    2. Reseteo Profesional del Modelo de Caja: Configurar la propiedad box-sizing a nivel universal.
 
-🛠 Requisitos Técnicos Obligatorios
+    3. Estructura de Grilla Elástica (Mobile-First): Reorganizar la sección de tarjetas (Paso 2 del Reto 3) utilizando la lógica de Contenedor, Fila y Columnas Matemáticas en lugar de anchos fijos.
 
-1. Para que el proyecto sea aprobado, deberá cumplir con los siguientes puntos técnicos:
-
-Variables CSS (:root): Deberás definir al menos 4 variables al inicio de tu CSS:
-    --color-primario
-    --color-secundario
-    --color-fondo
-    --fuente-principal
-    --otras
-
-2. Google Fonts: Importar al menos una fuente desde Google Fonts (ej: Montserrat, Roboto, Open Sans) y aplicarla a través de la variable --fuente-principal.
-
-3. HTML Semántico: No uses <div> para todo. Estructura tu HTML con:
-    <header> para la navegación.
-    <main> para el contenido central.
-    <section> para separar las áreas de productos/servicios.
-    <footer> para el pie de página.
-
-4. Box Model: El diseño debe tener un uso prolijo de padding (aire interno) y gap (espacio entre elementos en Flexbox).
+    4. Animaciones del Estado: Añadir transiciones explícitas (evitando el uso de 'all') y transformaciones en los elementos interactivos.
