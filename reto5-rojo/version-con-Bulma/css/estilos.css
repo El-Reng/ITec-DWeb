@@ -1,0 +1,110 @@
+/* SCROLL */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* GENERAL */
+
+body {
+  background: #171717;
+  color: white;
+}
+
+.title {
+  color: white;
+}
+
+p,
+li {
+  color: #a3a3a3;
+}
+
+/* HEADER */
+
+header {
+  background: #1f2937;
+}
+
+.logo,
+.nav-link {
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.logo:hover,
+.nav-link:hover {
+  color: #60a5fa !important;
+  background: transparent !important;
+}
+
+/* TARJETAS DE PRODUCTOS */
+
+.product-card {
+  background: #171717;
+  border: 1px solid #3f3f46;
+  border-radius: 12px;
+  overflow: hidden;
+
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.08);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.12);
+}
+
+/* DETALLE DEL PRODUCTO */
+
+.product-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 3rem;
+  align-items: center;
+}
+
+.product-main-image {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+
+.product-category {
+  letter-spacing: 0.18rem;
+}
+
+.product-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.product-description {
+  line-height: 2;
+}
+
+.product-features li {
+  margin-bottom: 0.8rem;
+}
+
+/* BOTONES */
+
+.buy-button {
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.buy-button:hover {
+  transform: scale(1.05);
+}
+
+/* FOOTER */
+
+.footer {
+  background: #1f2937 !important;
+  padding: 2rem 1.5rem;
+}
