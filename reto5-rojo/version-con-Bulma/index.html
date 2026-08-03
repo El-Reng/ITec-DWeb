@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovaKeys</title>
+
+    <!-- BULMA -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+    />
+
+    <link rel="stylesheet" href="css/estilos.css" />
+  </head>
+
+  <body>
+    <!-- HEADER -->
+
+    <header>
+      <nav
+        class="container is-flex is-justify-content-space-between is-align-items-center p-2"
+      >
+        <a
+          href="index.html"
+          class="navbar-item logo has-text-weight-bold is-size-3"
+        >
+          NovaKeys
+        </a>
+
+        <section class="is-flex">
+          <a class="navbar-item nav-link" href="#">Inicio</a>
+
+          <a class="navbar-item nav-link" href="#productos">Productos</a>
+
+          <a class="navbar-item nav-link" href="#">Contacto</a>
+        </section>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+
+    <section>
+      <figure class="image">
+        <img
+          src="img/hero.jpg"
+          alt="Teclados mecánicos NovaKeys"
+          style="height: 500px; object-fit: cover"
+        />
+      </figure>
+    </section>
+
+    <main>
+      <!-- PRESENTACIÓN -->
+
+      <section class="section">
+        <div class="container has-text-centered">
+          <h2 class="title is-3 mt-4 mb-5">
+            Teclados mecánicos para cada estilo
+          </h2>
+
+          <p class="subtitle is-5">
+            Descubrí nuestra selección de teclados mecánicos diseñados para
+            gamers, programadores y creadores de contenido.
+          </p>
+        </div>
+      </section>
+
+      <!-- PRODUCTOS -->
+
+      <section id="productos" class="section">
+        <div class="container">
+          <section class="columns is-multiline is-variable is-6">
+            <!-- CARD 1 -->
+
+            <article
+              class="column is-full-mobile is-half-tablet is-one-third-desktop"
+            >
+              <article class="card product-card">
+                <figure class="card-image image">
+                  <img
+                    src="img/producto1.jpg"
+                    alt="Nova TKL"
+                    class="product-image"
+                  />
+                </figure>
+
+                <div class="card-content">
+                  <h3 class="title is-4">Nova TKL</h3>
+
+                  <p class="has-text-link has-text-weight-bold mb-3">$94.999</p>
+
+                  <p class="mb-5">
+                    Compacto, elegante y perfecto para productividad.
+                  </p>
+
+                  <a class="button is-dark is-static"> Sin stock </a>
+                </div>
+              </article>
+            </article>
+
+            <!-- CARD 2 -->
+
+            <article
+              class="column is-full-mobile is-half-tablet is-one-third-desktop"
+            >
+              <article class="card product-card">
+                <figure class="card-image image">
+                  <img
+                    src="img/producto2.jpg"
+                    alt="Nova RGB Pro"
+                    class="product-image"
+                  />
+                </figure>
+
+                <div class="card-content">
+                  <h3 class="title is-4">Nova RGB Pro</h3>
+
+                  <p class="has-text-link has-text-weight-bold mb-3">
+                    $129.999
+                  </p>
+
+                  <p class="mb-5">
+                    Switches Red y RGB totalmente configurable.
+                  </p>
+
+                  <a href="detalle_producto.html" class="button is-link">
+                    Ver producto
+                  </a>
+                </div>
+              </article>
+            </article>
+
+            <!-- CARD 3 -->
+
+            <article
+              class="column is-full-mobile is-half-tablet is-one-third-desktop"
+            >
+              <article class="card product-card">
+                <figure class="card-image image">
+                  <img
+                    src="img/producto3.jpg"
+                    alt="Nova Full"
+                    class="product-image"
+                  />
+                </figure>
+
+                <div class="card-content">
+                  <h3 class="title is-4">Nova Full</h3>
+
+                  <p class="has-text-link has-text-weight-bold mb-3">
+                    $109.999
+                  </p>
+
+                  <p class="mb-5">Diseño completo con teclado numérico.</p>
+
+                  <a class="button is-dark is-static"> Sin stock </a>
+                </div>
+              </article>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <!-- CTA -->
+
+      <section class="section has-text-centered">
+        <a
+          href="detalle_producto.html"
+          class="button is-success is-large buy-button"
+        >
+          Comprar ahora
+        </a>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+
+    <footer class="footer has-background-dark">
+      <section class="content has-text-centered has-text-white">
+        <p>
+          © 2026
+          <strong class="has-text-white">NovaKeys</strong>
+        </p>
+
+        <p class="is-size-7">Todos los derechos reservados.</p>
+      </section>
+    </footer>
+  </body>
+</html>
