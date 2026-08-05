@@ -18,7 +18,7 @@
   <body>
     <!-- HEADER -->
 
-    <header>
+    <header class="has-background-info-dark">
       <nav
         class="container is-flex is-justify-content-space-between is-align-items-center p-2"
       >
@@ -42,54 +42,57 @@
     </header>
 
     <main class="section">
-      <section class="container is-max-desktop">
+      <section class="container">
         <!-- PRODUCTO PRINCIPAL -->
 
-        <article class="card product-card p-5">
-          <section class="product-layout">
-            <!-- IMAGEN -->
+        <article class="card mb-6">
+          <section class="card-content">
+            <section class="columns is-desktop is-vcentered">
+              <!-- IMAGEN -->
 
-            <figure>
-              <img
-                src="img/producto2.jpg"
-                alt="Nova RGB Pro"
-                class="product-main-image"
-              />
-            </figure>
+              <section class="column is-half-desktop">
+                <figure class="image">
+                  <img
+                    src="img/producto2.jpg"
+                    alt="Nova RGB Pro"
+                    class="product-image"
+                  />
+                </figure>
+              </section>
 
-            <!-- INFORMACIÓN -->
+              <!-- INFORMACIÓN -->
 
-            <section>
-              <p
-                class="has-text-link has-text-weight-bold is-uppercase product-category mb-3"
-              >
-                Línea Gamer
-              </p>
+              <section class="column is-half-desktop">
+                <p class="has-text-link has-text-weight-bold is-uppercase mb-3">
+                  Línea Gamer
+                </p>
 
-              <h1 class="title is-1 mb-4">Nova RGB Pro</h1>
+                <h1 class="title is-1 mb-4">Nova RGB Pro</h1>
 
-              <p class="has-text-warning is-size-4 mb-5">★★★★★</p>
+                <p class="has-text-warning is-size-4 mb-5">★★★★★</p>
 
-              <p class="product-price has-text-link mb-5">$129.999</p>
+                <p class="title has-text-link mb-5">$129.999</p>
 
-              <p class="product-description mb-6">
-                El Nova RGB Pro fue diseñado para ofrecer una experiencia
-                superior tanto para videojuegos como para productividad.
-                Incorpora switches mecánicos de alta precisión, iluminación RGB
-                totalmente configurable y una estructura resistente de aluminio.
-              </p>
+                <p class="mb-6">
+                  El Nova RGB Pro fue diseñado para ofrecer una experiencia
+                  superior tanto para videojuegos como para productividad.
+                  Incorpora switches mecánicos de alta precisión, iluminación
+                  RGB totalmente configurable y una estructura resistente de
+                  aluminio.
+                </p>
 
-              <ul class="product-features mb-6">
-                <li>✔ Switches Red de alta respuesta</li>
-                <li>✔ Iluminación RGB personalizable</li>
-                <li>✔ Cable USB-C desmontable</li>
-                <li>✔ Tecnología Hot-Swap</li>
-                <li>✔ Compatible con Windows y Linux</li>
-              </ul>
+                <ul>
+                  <li class="mb-2">✔ Switches Red de alta respuesta</li>
+                  <li class="mb-2">✔ Iluminación RGB personalizable</li>
+                  <li class="mb-2">✔ Cable USB-C desmontable</li>
+                  <li class="mb-2">✔ Tecnología Hot-Swap</li>
+                  <li class="mb-5">✔ Compatible con Windows y Linux</li>
+                </ul>
 
-              <a href="#" class="button is-success is-large buy-button">
-                Comprar ahora
-              </a>
+                <a href="#" class="button is-success is-large">
+                  Comprar ahora
+                </a>
+              </section>
             </section>
           </section>
         </article>
@@ -190,7 +193,7 @@
 
     <!-- FOOTER -->
 
-    <footer class="footer has-background-dark">
+    <footer class="footer has-background-info-dark p-5">
       <section class="content has-text-centered has-text-white">
         <p>
           © 2026
