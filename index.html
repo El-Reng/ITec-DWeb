@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ITecnoFuturo 2026 — Expo de Innovación, Robótica e IA</title>
+  <meta name="description" content="Gran exposición tecnológica en la Sede Campus del ITec Río Cuarto. Proyectos de IA, Robótica, Automatización y más." />
+
+  <!-- Anti-FOUC: aplica el tema antes de que el navegador pinte -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('itec-theme');
+        if (t === 'light') {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN v3 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            // Paleta DARK (índigo / cian futurista — sin cambios)
+            dark: { 950: '#080B14', 900: '#0D1117', 800: '#111827', 700: '#1E293B' },
+            // Paleta de acento compartida
+            brand: { indigo: '#6366F1', cyan: '#06B6D4', purple: '#A78BFA' },
+            // Paleta LIGHT roja (inspirada en ITec Río Cuarto)
+            itec: {
+              red:    '#C0392B',   // rojo principal
+              rose:   '#E74C3C',   // rojo vivo hover
+              dark:   '#7B1D1D',   // rojo oscuro títulos
+              bg:     '#FFF8F7',   // fondo casi blanco cálido
+              card:   '#FFFFFF',   // fondo de tarjetas
+              border: '#FECACA',   // bordes tenues rosa-rojo
+              muted:  '#6B2323',   // texto secundario
+            },
+          },
+          keyframes: {
+            floatY:    { '0%,100%': { transform: 'translateY(0)' },   '50%': { transform: 'translateY(-8px)' } },
+            pulseRing: { '0%': { opacity: '0.6', transform: 'scale(1)' }, '100%': { opacity: '0', transform: 'scale(1.5)' } },
+            botTalk:   { '0%,100%': { transform: 'rotate(0deg)' },   '25%': { transform: 'rotate(-4deg)' }, '75%': { transform: 'rotate(4deg)' } },
+            botBlink:  { '0%,95%,100%': { scaleY: '1' }, '97%': { scaleY: '0.1' } },
+            botWave:   { '0%,100%': { transform: 'rotate(0deg)' },   '30%': { transform: 'rotate(-25deg)' }, '70%': { transform: 'rotate(15deg)' } },
+            slideUp:   { 'from': { opacity: '0', transform: 'translateY(12px)' }, 'to': { opacity: '1', transform: 'translateY(0)' } },
+            fadeIn:    { 'from': { opacity: '0' }, 'to': { opacity: '1' } },
+          },
+          animation: {
+            floatY:    'floatY 3.5s ease-in-out infinite',
+            pulseRing: 'pulseRing 1.8s ease-out infinite',
+            botTalk:   'botTalk 0.4s ease-in-out',
+            botWave:   'botWave 0.6s ease-in-out',
+            slideUp:   'slideUp 0.3s ease-out forwards',
+            fadeIn:    'fadeIn 0.25s ease-out',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ── Base body ─────────────────────────────────────────── */
+    body { overflow-x: hidden; }
+
+    /* ── Modo oscuro: fondo base ──────────────────────────── */
+    html.dark  body { background-color: #080B14; color: #F1F5F9; }
+
+    /* ── Modo claro: fondo cálido rojo ITec ──────────────── */
+    html.light body { background-color: #FFF8F7; color: #1a1a1a; }
+
+    /* Scrollbar sutil */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    html.dark  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+    html.light ::-webkit-scrollbar-thumb { background: #FECACA; border-radius: 9999px; }
+
+    /* ── SPA: transición entre secciones ─────────────────── */
+    .spa-section { display: none; }
+    .spa-section.active { display: block; animation: slideUp 0.3s ease-out; }
+
+    /* ── T-Bot: widget flotante fijo ─────────────────────── */
+    #tbot-widget {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      pointer-events: none;
+    }
+    #tbot-widget > * { pointer-events: auto; }
+
+    /* Burbuja de diálogo */
+    #tbot-bubble {
+      max-width: 210px;
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid rgba(99, 102, 241, 0.5);
+      border-radius: 14px 14px 2px 14px;
+      padding: 10px 12px;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      color: #E2E8F0;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    html.light #tbot-bubble {
+      background: rgba(255, 248, 247, 0.96);
+      border-color: rgba(192, 57, 43, 0.4);
+      color: #3b0a0a;
+      box-shadow: 0 8px 32px rgba(192,57,43,0.12);
+    }
+    #tbot-bubble.hidden { opacity: 0; pointer-events: none; transform: translateY(8px); }
+
+    /* Botón del robot: idéntico en modo oscuro y claro para no perderse */
+    #tbot-btn {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      cursor: pointer;
+      background: linear-gradient(135deg, #1E293B 0%, #0f172a 100%) !important;
+      border: 2px solid rgba(99,102,241,0.6) !important;
+      box-shadow: 0 0 0 6px rgba(99,102,241,0.15), 0 12px 40px rgba(0,0,0,0.5) !important;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      transition: transform 0.15s, box-shadow 0.15s;
+      animation: floatY 3.5s ease-in-out infinite;
+    }
+    html.light #tbot-btn {
+      background: linear-gradient(135deg, #1E293B 0%, #0f172a 100%) !important;
+      border: 2px solid rgba(99,102,241,0.6) !important;
+      box-shadow: 0 0 0 6px rgba(99,102,241,0.2), 0 12px 40px rgba(0,0,0,0.3) !important;
+    }
+    #tbot-btn:hover  { transform: scale(1.08) translateY(-2px); }
+    #tbot-btn:active { transform: scale(0.96); }
+
+    /* Anillo de pulso detrás del bot */
+    #tbot-btn::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 2px solid rgba(99,102,241,0.45);
+      animation: pulseRing 1.8s ease-out infinite;
+    }
+    html.light #tbot-btn::before { border-color: rgba(99,102,241,0.45); }
+
+    /* Animaciones de clic del robot */
+    .tbot-talking  { animation: botTalk 0.4s ease-in-out; }
+    .tbot-waving   { animation: botWave 0.6s ease-in-out; }
+
+    /* ── Botones base reutilizables ───────────────────────── */
+    .btn-primary-dark {
+      background: linear-gradient(135deg, #6366F1, #06B6D4);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 12px 24px;
+      transition: filter 0.2s, transform 0.15s, background 0.2s;
+      border: none; cursor: pointer;
+    }
+    .btn-primary-dark:hover  { filter: brightness(1.12); }
+    .btn-primary-dark:active { transform: scale(0.97); }
+
+    html.light .btn-primary-dark {
+      background: linear-gradient(135deg, #C0392B, #E74C3C) !important;
+      color: #fff !important;
+      box-shadow: 0 4px 14px rgba(192, 57, 43, 0.25);
+    }
+    html.light .btn-primary-dark:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 6px 20px rgba(192, 57, 43, 0.35);
+    }
+
+    .btn-primary-light {
+      background: #C0392B;
+      color: #fff;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 12px 24px;
+      transition: background 0.2s, transform 0.15s;
+      border: none; cursor: pointer;
+    }
+    .btn-primary-light:hover  { background: #E74C3C; }
+    .btn-primary-light:active { transform: scale(0.97); }
+
+    /* ── Cards de proyecto ────────────────────────────────── */
+    .project-card {
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+    html.dark  .project-card { background: #111827; border: 1px solid #1E293B; }
+    html.light .project-card { background: #FFFFFF; border: 1px solid #FECACA; box-shadow: 0 2px 12px rgba(192,57,43,0.07); }
+    .project-card:hover { transform: translateY(-6px); }
+    html.dark  .project-card:hover { box-shadow: 0 20px 60px rgba(99,102,241,0.15); }
+    html.light .project-card:hover { box-shadow: 0 20px 60px rgba(192,57,43,0.15); }
+
+    /* ── Badge estados ────────────────────────────────────── */
+    .badge-demo    { background: rgba(16,185,129,0.12); color: #34D399; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-proto   { background: rgba(99,102,241,0.12); color: #818CF8; border: 1px solid rgba(99,102,241,0.3); }
+    .badge-exhib   { background: rgba(245,158,11,0.12); color: #FCD34D; border: 1px solid rgba(245,158,11,0.3); }
+
+    html.light .badge-demo  { background: rgba(5,150,105,0.1);  color: #047857; border-color: rgba(5,150,105,0.3); }
+    html.light .badge-proto { background: rgba(192,57,43,0.1);  color: #9B1C1C; border-color: rgba(192,57,43,0.3); }
+    html.light .badge-exhib { background: rgba(180,83,9,0.1);   color: #92400E; border-color: rgba(180,83,9,0.3); }
+
+    /* ── Navbar adaptado ─────────────────────────────────── */
+    html.dark  .navbar  { background: rgba(8,11,20,0.9); border-bottom: 1px solid #1E293B; }
+    html.light .navbar  { background: rgba(255,248,247,0.95); border-bottom: 1px solid #FECACA; }
+
+    html.dark  .nav-link       { color: #94A3B8; }
+    html.light .nav-link       { color: #6B2323; }
+    html.dark  .nav-link:hover { color: #E2E8F0; }
+    html.light .nav-link:hover { color: #C0392B; }
+    html.dark  .nav-link.active-nav { color: #fff; background: rgba(99,102,241,0.2); }
+    html.light .nav-link.active-nav { color: #C0392B; background: rgba(192,57,43,0.1); font-weight: 700; }
+
+    /* ── Hero y textos adaptativos ────────────────────────── */
+    html.dark  .hero-title { color: #F1F5F9; }
+    html.light .hero-title { color: #7B1D1D; }
+    html.dark  .gradient-text { background: linear-gradient(90deg, #818CF8, #06B6D4, #A78BFA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    html.light .gradient-text { background: linear-gradient(90deg, #C0392B, #E74C3C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    html.dark  .text-muted  { color: #94A3B8; }
+    html.light .text-muted  { color: #6B2323; }
+    html.dark  .text-body   { color: #CBD5E1; }
+    html.light .text-body   { color: #1a0404; font-weight: 450; }
+    html.dark  .text-strong { color: #F1F5F9; }
+    html.light .text-strong { color: #1a0404; }
+
+    /* ── Superficies ─────────────────────────────────────── */
+    html.dark  .surface  { background: #111827; border: 1px solid #1E293B; }
+    html.light .surface  { background: #FFFFFF;  border: 1px solid #FECACA; }
+    html.dark  .surface2 { background: #0D1117; }
+    html.light .surface2 { background: #FFF8F7; }
+
+    /* ── Inputs ──────────────────────────────────────────── */
+    html.dark  .field { background: #0D1117; border: 1px solid #334155; color: #E2E8F0; }
+    html.light .field { background: #fff;    border: 1px solid #FECACA; color: #1a0404; }
+    .field:focus { outline: none; }
+    html.dark  .field:focus { border-color: #6366F1; box-shadow: 0 0 0 3px rgba(99,102,241,0.18); }
+    html.light .field:focus { border-color: #C0392B; box-shadow: 0 0 0 3px rgba(192,57,43,0.15); }
+
+    /* ── Sección de agenda ───────────────────────────────── */
+    html.dark  .agenda-item { background: #0D1117; border-left: 3px solid #6366F1; }
+    html.light .agenda-item { background: #FFF0EF; border-left: 3px solid #C0392B; }
+
+    /* ── Modal (importante: sólo se muestra cuando NO tiene la clase .hidden) ── */
+    #modal-backdrop.hidden {
+      display: none !important;
+    }
+    #modal-backdrop:not(.hidden) {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+      animation: fadeIn 0.2s;
+    }
+    html.dark  .modal-box { background: #111827; border: 1px solid #1E293B; }
+    html.light .modal-box { background: #FFFFFF;  border: 1px solid #FECACA; }
+
+    /* Botón ver detalles de las tarjetas */
+    html.dark  .btn-card-detail { background: rgba(99,102,241,0.12); color: #818CF8; }
+    html.light .btn-card-detail { background: rgba(192,57,43,0.12); color: #C0392B; }
+    .project-card:hover .btn-card-detail { filter: brightness(1.15); }
+
+    /* Badge del hero */
+    html.dark  .hero-badge { background: rgba(99,102,241,0.12); color: #818CF8; border: 1px solid rgba(99,102,241,0.25); }
+    html.light .hero-badge { background: rgba(192,57,43,0.1); color: #C0392B; border: 1px solid rgba(192,57,43,0.25); }
+
+    /* Logos y badges dinámicos según tema */
+    html.dark  .brand-badge { background: linear-gradient(135deg, #6366F1, #06B6D4); }
+    html.light .brand-badge { background: linear-gradient(135deg, #C0392B, #E74C3C); }
+
+    /* ── Filter chips ────────────────────────────────────── */
+    html.dark  .chip        { background: #1E293B; color: #94A3B8; border: 1px solid #334155; }
+    html.light .chip        { background: #FFF0EF; color: #6B2323; border: 1px solid #FECACA; }
+    html.dark  .chip:hover  { background: #334155; color: #E2E8F0; }
+    html.light .chip:hover  { background: #FECACA; color: #7B1D1D; }
+    html.dark  .chip.active { background: #6366F1; color: #fff; border-color: #6366F1; }
+    html.light .chip.active { background: #C0392B; color: #fff; border-color: #C0392B; }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    html.dark  .site-footer { background: #0D1117; border-top: 1px solid #1E293B; }
+    html.light .site-footer { background: #fff;    border-top: 1px solid #FECACA; }
+
+    /* ── Separador de sección ────────────────────────────── */
+    html.dark  .divider { border-color: #1E293B; }
+    html.light .divider { border-color: #FECACA; }
+
+    /* ── Tabs de agenda ──────────────────────────────────── */
+    html.dark  .agenda-tab        { background: #1E293B; color: #94A3B8; }
+    html.light .agenda-tab        { background: #FFF0EF; color: #6B2323; }
+    html.dark  .agenda-tab.active { background: #6366F1; color: #fff; }
+    html.light .agenda-tab.active { background: #C0392B; color: #fff; }
+
+    /* ── Pase digital ────────────────────────────────────── */
+    html.dark  .pase { background: linear-gradient(135deg, #1E293B, #0D1117); border: 1px solid #6366F1; }
+    html.light .pase { background: linear-gradient(135deg, #FFF0EF, #FFF8F7);  border: 1px solid #C0392B; }
+
+    /* ── Scrollbar interno modal ─────────────────────────── */
+    .modal-body { overflow-y: auto; max-height: 60vh; }
+    .modal-body::-webkit-scrollbar { width: 4px; }
+    html.dark  .modal-body::-webkit-scrollbar-thumb { background: #334155; }
+    html.light .modal-body::-webkit-scrollbar-thumb { background: #FECACA; }
+  </style>
+</head>
+
+<body class="font-sans min-h-screen transition-colors duration-300">
+
+<!-- ════════════════════════════════════════════════════════
+     NAVBAR (sticky, SPA navigation)
+════════════════════════════════════════════════════════ -->
+<header id="navbar" class="navbar sticky top-0 z-40 backdrop-blur-md transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+
+    <!-- Logo -->
+    <button onclick="showSection('inicio')" class="flex items-center gap-2.5 group" aria-label="Ir al inicio">
+      <div class="brand-badge w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-105">
+        <!-- Chip / robot icon -->
+        <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <circle cx="12" cy="6" r="2.5"/>
+          <line x1="12" y1="8.5" x2="12" y2="11"/>
+          <circle cx="8" cy="16.5" r="1.2" fill="currentColor"/>
+          <circle cx="16" cy="16.5" r="1.2" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="flex flex-col leading-none">
+        <span class="font-extrabold text-lg gradient-text tracking-tight">ITecnoFuturo</span>
+        <span class="text-[9px] font-semibold uppercase tracking-widest text-muted">Campus ITec · Río Cuarto</span>
+      </div>
+    </button>
+
+    <!-- Nav links (desktop) -->
+    <nav class="hidden md:flex items-center gap-1" aria-label="Secciones principales">
+      <button onclick="showSection('inicio')"    id="nav-inicio"     class="nav-link active-nav px-4 py-2 rounded-lg text-sm font-semibold transition-all">Inicio</button>
+      <button onclick="showSection('catalogo')"  id="nav-catalogo"   class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all">Catálogo</button>
+      <button onclick="showSection('inscripcion')" id="nav-inscripcion" class="nav-link px-4 py-2 rounded-lg text-sm font-semibold transition-all">Inscripción</button>
+    </nav>
+
+    <!-- Right controls -->
+    <div class="flex items-center gap-2">
+      <!-- Theme toggle -->
+      <button id="theme-btn" onclick="toggleTheme()" aria-label="Cambiar tema" title="Alternar modo claro/oscuro"
+              class="w-9 h-9 rounded-lg flex items-center justify-center transition-colors surface text-muted hover:text-strong">
+        <svg id="icon-sun"  class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg id="icon-moon" class="w-5 h-5"        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <!-- CTA Desktop -->
+      <button onclick="showSection('inscripcion')"
+              class="btn-primary-dark hidden md:flex items-center gap-2 px-4 py-2 !rounded-lg text-sm font-bold text-white transition-all">
+        Inscribirme
+      </button>
+      <!-- Hamburger -->
+      <button onclick="toggleMobile()" id="hamburger-btn" aria-label="Menú móvil" aria-expanded="false"
+              class="md:hidden w-9 h-9 rounded-lg flex items-center justify-center surface text-muted">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t divider px-4 py-3 space-y-1 surface2">
+    <button onclick="showSection('inicio');    closeMobile()" class="block w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold nav-link transition-all">Inicio</button>
+    <button onclick="showSection('catalogo'); closeMobile()" class="block w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold nav-link transition-all">Catálogo de Proyectos</button>
+    <button onclick="showSection('inscripcion'); closeMobile()" class="block w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold nav-link transition-all">Inscripción y Agenda</button>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════
+     MAIN
+════════════════════════════════════════════════════════ -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 pb-32">
+
+  <!-- ╔══════════════════════════════════════════╗
+       ║  SECCIÓN 1: INICIO / HERO               ║
+       ╚══════════════════════════════════════════╝ -->
+  <section id="sec-inicio" class="spa-section active">
+
+    <!-- Hero -->
+    <div class="py-16 lg:py-24 text-center max-w-4xl mx-auto">
+      <div class="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+        Edición 2026 · 18 y 19 de Octubre · Sede Campus ITec
+      </div>
+
+      <h1 class="hero-title text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.12] mb-6">
+        Expo de Innovación<br/>
+        <span class="gradient-text">Robótica e IA</span>
+      </h1>
+
+      <p class="text-body text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
+        Dos jornadas donde estudiantes, profesionales y familias podrán explorar prototipos de
+        <strong class="text-strong">Inteligencia Artificial</strong>,
+        <strong class="text-strong">Robótica Asistiva</strong>,
+        <strong class="text-strong">Automatización</strong> y mucho más
+        en el <em>Instituto Tecnológico ITec de Río Cuarto</em>.
+      </p>
+
+      <!-- Data pills -->
+      <div class="flex flex-wrap justify-center gap-4 mb-10">
+        <div class="px-5 py-3 rounded-2xl surface text-center">
+          <div class="text-xs text-muted font-semibold uppercase tracking-wider">Fechas</div>
+          <div class="text-sm font-bold text-strong mt-0.5">18 y 19 · Oct · 2026</div>
+        </div>
+        <div class="px-5 py-3 rounded-2xl surface text-center">
+          <div class="text-xs text-muted font-semibold uppercase tracking-wider">Sede</div>
+          <div class="text-sm font-bold text-strong mt-0.5">Campus ITec Río Cuarto</div>
+        </div>
+        <div class="px-5 py-3 rounded-2xl surface text-center">
+          <div class="text-xs text-muted font-semibold uppercase tracking-wider">Acceso</div>
+          <div class="text-sm font-bold mt-0.5" style="color:#34D399">Entrada Libre</div>
+        </div>
+      </div>
+
+      <!-- CTA buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <button onclick="showSection('catalogo')"
+                class="btn-primary-dark text-base px-8 py-3.5 flex items-center gap-2">
+          Explorar Proyectos
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button onclick="showSection('inscripcion')"
+                class="px-8 py-3.5 rounded-xl text-base font-bold border transition-all text-strong"
+                style="border-color: var(--tw-border-opacity,1)"
+                id="cta-inscripcion">
+          Inscribirme Gratis
+        </button>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <hr class="divider my-2"/>
+
+    <!-- Sobre el evento: 6 ejes -->
+    <div class="py-16">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-extrabold text-strong">Áreas Tecnológicas</h2>
+        <p class="text-muted mt-2 text-base max-w-xl mx-auto">Seis disciplinas de vanguardia, una sola exposición.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <!-- Card eje -->
+        <div class="surface rounded-2xl p-6 hover:scale-[1.02] transition-transform">
+          <div class="w-11 h-11 rounded-xl mb-4 flex items-center justify-center" style="background:rgba(99,102,241,0.12)">
+            <svg class="w-6 h-6" style="color:#818CF8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </div>
+          <h3 class="font-bold text-strong text-base mb-1">Inteligencia Artificial</h3>
+          <p class="text-muted text-sm leading-relaxed">Agentes autónomos, procesamiento de lenguaje y toma de decisiones inteligentes.</p>
+        </div>
+
+        <div class="surface rounded-2xl p-6 hover:scale-[1.02] transition-transform">
+          <div class="w-11 h-11 rounded-xl mb-4 flex items-center justify-center" style="background:rgba(6,182,212,0.12)">
+            <svg class="w-6 h-6" style="color:#06B6D4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><circle cx="12" cy="6" r="2.5"/><line x1="12" y1="8.5" x2="12" y2="11"/></svg>
+          </div>
+          <h3 class="font-bold text-strong text-base mb-1">Robótica Colaborativa</h3>
+          <p class="text-muted text-sm leading-relaxed">Autómatas diseñados para coexistir y cooperar de forma segura con las personas.</p>
+        </div>
+
+        <div class="surface rounded-2xl p-6 hover:scale-[1.02] transition-transform">
+          <div class="w-11 h-11 rounded-xl mb-4 flex items-center justify-center" style="background:rgba(167,139,250,0.12)">
+            <svg class="w-6 h-6" style="color:#A78BFA" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3 class="font-bold text-strong text-base mb-1">Automatización Industrial</h3>
+          <p class="text-muted text-sm leading-relaxed">Celdas de manufactura inteligente, PLC y sensores IoT de alta velocidad.</p>
+        </div>
+
+        <div class="surface rounded-2xl p-6 hover:scale-[1.02] transition-transform">
+          <div class="w-11 h-11 rounded-xl mb-4 flex items-center justify-center" style="background:rgba(245,158,11,0.12)">
+            <svg class="w-6 h-6" style="color:#FCD34D" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3 class="font-bold text-strong text-base mb-1">Domótica Inteligente</h3>
+          <p class="text-muted text-sm leading-relaxed">Control del hogar por voz y sensores: eficiencia energética y confort automatizado.</p>
+        </div>
+
+        <div class="surface rounded-2xl p-6 hover:scale-[1.02] transition-transform">
+          <div class="w-11 h-11 rounded-xl mb-4 flex items-center justify-center" style="background:rgba(52,211,153,0.12)">
+            <svg class="w-6 h-6" style="color:#34D399" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3 class="font-bold text-strong text-base mb-1">Visión Artificial</h3>
+          <p class="text-muted text-sm leading-relaxed">Detección de patrones, reconocimiento facial y guiado de vehículos autónomos.</p>
+        </div>
+
+        <div class="surface rounded-2xl p-6 hover:scale-[1.02] transition-transform">
+          <div class="w-11 h-11 rounded-xl mb-4 flex items-center justify-center" style="background:rgba(251,113,133,0.12)">
+            <svg class="w-6 h-6" style="color:#FB7185" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2z"/></svg>
+          </div>
+          <h3 class="font-bold text-strong text-base mb-1">Robótica Asistiva</h3>
+          <p class="text-muted text-sm leading-relaxed">Prótesis mecatrónicas y dispositivos que mejoran la autonomía de personas con discapacidad motriz.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </section><!-- /sec-inicio -->
+
+  <!-- ╔══════════════════════════════════════════╗
+       ║  SECCIÓN 2: CATÁLOGO DE PROYECTOS       ║
+       ╚══════════════════════════════════════════╝ -->
+  <section id="sec-catalogo" class="spa-section">
+    <div class="py-12">
+
+      <!-- Encabezado -->
+      <div class="mb-8">
+        <h2 class="text-3xl font-extrabold text-strong">Catálogo de Proyectos</h2>
+        <p class="text-muted mt-1">Seleccioná un filtro y hacé clic en <em>"Ver detalles"</em> para leer la ficha técnica completa.</p>
+      </div>
+
+      <!-- Buscador + filtros -->
+      <div class="surface rounded-2xl p-4 mb-8 flex flex-col sm:flex-row gap-4">
+        <div class="relative flex-1">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="search-input" type="text" placeholder="Buscar por nombre, expositor…"
+                 oninput="filterCards()"
+                 class="field w-full pl-9 pr-3 py-2.5 rounded-xl text-sm" />
+        </div>
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoría">
+          <button class="chip active rounded-full px-4 py-1.5 text-xs font-semibold transition-all" onclick="setChip(this,'todos')">Todos</button>
+          <button class="chip rounded-full px-4 py-1.5 text-xs font-semibold transition-all" onclick="setChip(this,'ia')">IA &amp; Visión</button>
+          <button class="chip rounded-full px-4 py-1.5 text-xs font-semibold transition-all" onclick="setChip(this,'robotica')">Robótica</button>
+          <button class="chip rounded-full px-4 py-1.5 text-xs font-semibold transition-all" onclick="setChip(this,'automatizacion')">Automatización</button>
+          <button class="chip rounded-full px-4 py-1.5 text-xs font-semibold transition-all" onclick="setChip(this,'domotica')">Domótica</button>
+        </div>
+      </div>
+
+      <!-- Grilla de tarjetas -->
+      <div id="cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+      <!-- Empty state -->
+      <div id="empty-state" class="hidden text-center py-20">
+        <div class="text-5xl mb-4">🔍</div>
+        <h3 class="text-xl font-bold text-strong mb-2">Sin resultados</h3>
+        <p class="text-muted text-sm mb-6">No hay proyectos que coincidan con tu búsqueda.</p>
+        <button onclick="resetFilter()" class="btn-primary-dark px-6 py-2.5 text-sm">Restablecer filtros</button>
+      </div>
+
+    </div>
+  </section><!-- /sec-catalogo -->
+
+  <!-- ╔══════════════════════════════════════════╗
+       ║  SECCIÓN 3: INSCRIPCIÓN + AGENDA        ║
+       ╚══════════════════════════════════════════╝ -->
+  <section id="sec-inscripcion" class="spa-section">
+    <div class="py-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+      <!-- Columna Izquierda: Formulario -->
+      <div>
+        <h2 class="text-3xl font-extrabold text-strong mb-2">Registrá tu Asistencia</h2>
+        <p class="text-muted text-sm mb-8">Completá el formulario y recibirás tu <strong class="text-strong">Pase Digital</strong> al instante. La inscripción es una simulación académica sin envío real de datos.</p>
+
+        <!-- Éxito (oculto por defecto) -->
+        <div id="form-success" class="hidden mb-6 p-6 rounded-2xl border-2" style="border-color:#34D399; background:rgba(16,185,129,0.08)">
+          <div class="flex items-start gap-3 mb-4">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background:#34D399">
+              <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <div class="font-bold text-base" style="color:#34D399">¡Inscripción Confirmada!</div>
+              <div class="text-muted text-sm">Tu pase digital de acceso ha sido generado.</div>
+            </div>
+          </div>
+          <!-- Pase digital -->
+          <div class="pase rounded-xl p-4 flex items-center justify-between gap-4">
+            <div>
+              <div class="text-[10px] font-bold uppercase tracking-widest text-muted mb-1">Pase Oficial · ITecnoFuturo 2026</div>
+              <div id="pase-nombre" class="text-base font-extrabold text-strong">—</div>
+              <div id="pase-detalle" class="text-xs text-muted mt-0.5">—</div>
+              <div class="text-[10px] font-mono text-muted mt-1">ID: <span id="pase-id">—</span></div>
+            </div>
+            <!-- QR simulado -->
+            <svg class="w-14 h-14 shrink-0 opacity-70" viewBox="0 0 100 100" fill="currentColor" class="text-muted">
+              <rect x="10" y="10" width="30" height="30" rx="3" fill="none" stroke="currentColor" stroke-width="7"/>
+              <rect x="20" y="20" width="10" height="10"/>
+              <rect x="60" y="10" width="30" height="30" rx="3" fill="none" stroke="currentColor" stroke-width="7"/>
+              <rect x="70" y="20" width="10" height="10"/>
+              <rect x="10" y="60" width="30" height="30" rx="3" fill="none" stroke="currentColor" stroke-width="7"/>
+              <rect x="20" y="70" width="10" height="10"/>
+              <rect x="60" y="60" width="10" height="10"/><rect x="75" y="60" width="10" height="10"/>
+              <rect x="60" y="75" width="10" height="10"/><rect x="75" y="75" width="10" height="10"/>
+            </svg>
+          </div>
+          <button onclick="resetForm()" class="mt-4 text-xs font-semibold underline text-muted hover:text-strong">Registrar otra persona</button>
+        </div>
+
+        <!-- Formulario -->
+        <form id="registration-form" onsubmit="submitForm(event)" novalidate class="space-y-5">
+          <div>
+            <label for="f-nombre" class="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">Nombre y Apellido <span class="text-red-500">*</span></label>
+            <input type="text" id="f-nombre" required placeholder="Ej: Valentina Gómez" class="field w-full px-4 py-3 rounded-xl text-sm" />
+            <p id="err-nombre" class="hidden text-xs mt-1" style="color:#F87171">Ingresá tu nombre completo (mín. 3 caracteres).</p>
+          </div>
+          <div>
+            <label for="f-email" class="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">Correo Electrónico <span class="text-red-500">*</span></label>
+            <input type="email" id="f-email" required placeholder="ejemplo@correo.com" class="field w-full px-4 py-3 rounded-xl text-sm" />
+            <p id="err-email" class="hidden text-xs mt-1" style="color:#F87171">Ingresá un correo válido.</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label for="f-tipo" class="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">Tipo de visitante</label>
+              <select id="f-tipo" class="field w-full px-4 py-3 rounded-xl text-sm">
+                <option>Público General</option>
+                <option>Estudiante</option>
+                <option>Profesional</option>
+                <option>Empresa</option>
+              </select>
+            </div>
+            <div>
+              <label for="f-cant" class="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">Cantidad de asistentes</label>
+              <input type="number" id="f-cant" value="1" min="1" max="10" class="field w-full px-4 py-3 rounded-xl text-sm" />
+            </div>
+          </div>
+          <div>
+            <label for="f-interes" class="block text-xs font-bold uppercase tracking-wider text-muted mb-1.5">Área de mayor interés</label>
+            <select id="f-interes" class="field w-full px-4 py-3 rounded-xl text-sm">
+              <option>Todas las áreas</option>
+              <option>Inteligencia Artificial</option>
+              <option>Robótica</option>
+              <option>Automatización</option>
+            </select>
+          </div>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="f-terms" required class="mt-1 rounded w-4 h-4" />
+            <span class="text-xs text-muted leading-relaxed">Acepto participar de la simulación académica de inscripción del evento ficticio ITecnoFuturo.</span>
+          </label>
+          <p id="err-terms" class="hidden text-xs" style="color:#F87171">Debés aceptar para continuar.</p>
+          <button type="submit" class="btn-primary-dark w-full py-4 text-base flex items-center justify-center gap-2">
+            Confirmar Inscripción
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+      </div>
+
+      <!-- Columna Derecha: Sede + Agenda -->
+      <div class="space-y-8">
+
+        <!-- Info sede -->
+        <div class="surface rounded-2xl p-6 space-y-4">
+          <h3 class="font-bold text-base text-strong">Sede del Evento</h3>
+          <div class="flex items-start gap-3 text-sm">
+            <svg class="w-5 h-5 text-muted shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div>
+              <div class="font-semibold text-strong">Campus ITec Río Cuarto</div>
+              <div class="text-muted mt-0.5">Aulas Magnas, Laboratorios de Mecatrónica y Auditorio Central.<br/>Río Cuarto, Córdoba, Argentina.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 text-sm">
+            <svg class="w-5 h-5 text-muted shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div>
+              <div class="font-semibold text-strong">Horarios</div>
+              <div class="text-muted mt-0.5">Día 1: 09:00 a 19:30 hs · Día 2: 10:00 a 18:00 hs</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agenda tabs -->
+        <div class="surface rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-base text-strong">Cronograma de Actividades</h3>
+            <div class="flex gap-1">
+              <button id="tab1" onclick="setAgendaTab(1)" class="agenda-tab active text-xs font-bold px-3 py-1.5 rounded-lg transition-all">Día 1</button>
+              <button id="tab2" onclick="setAgendaTab(2)" class="agenda-tab text-xs font-bold px-3 py-1.5 rounded-lg transition-all">Día 2</button>
+            </div>
+          </div>
+          <div id="agenda-list" class="space-y-3"></div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="rounded-xl px-4 py-3 text-xs text-muted leading-relaxed" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25)">
+          ⚠️ <strong class="text-strong">Nota académica:</strong> ITecnoFuturo es un proyecto ficticio del Seminario de Diseño Web del ITec. Los expositores, fechas y proyectos son datos de muestra.
+        </div>
+
+      </div>
+    </div>
+  </section><!-- /sec-inscripcion -->
+
+</main>
+
+<!-- ════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════ -->
+<footer class="site-footer transition-colors duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div>
+      <div class="flex items-center gap-2 mb-3">
+        <div class="brand-badge w-7 h-7 rounded-lg flex items-center justify-center">
+          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <span class="font-extrabold gradient-text">ITecnoFuturo</span>
+      </div>
+      <p class="text-xs text-muted leading-relaxed">SPA académica del Seminario de Diseño Web — ITec Río Cuarto 2026.<br/>Inspirada en <a href="https://www.itecriocuarto.org.ar/" target="_blank" rel="noopener" class="underline hover:text-strong">itecriocuarto.org.ar</a></p>
+    </div>
+    <div>
+      <h4 class="text-xs font-bold uppercase tracking-wider text-strong mb-3">Secciones</h4>
+      <ul class="space-y-2 text-xs text-muted">
+        <li><button onclick="showSection('inicio')"     class="hover:text-strong transition-colors">Inicio</button></li>
+        <li><button onclick="showSection('catalogo')"   class="hover:text-strong transition-colors">Catálogo de Proyectos</button></li>
+        <li><button onclick="showSection('inscripcion')" class="hover:text-strong transition-colors">Inscripción y Agenda</button></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-xs font-bold uppercase tracking-wider text-strong mb-3">Stack</h4>
+      <ul class="text-xs text-muted space-y-1">
+        <li>• HTML5 Semántico</li>
+        <li>• Tailwind CSS v3 (CDN)</li>
+        <li>• JavaScript Vanilla ES6+</li>
+        <li>• SPA sin frameworks</li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t divider">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-muted">
+      <span>© 2026 ITecnoFuturo · Proyecto Académico Ficticio</span>
+      <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="hover:text-strong transition-colors">↑ Volver arriba</button>
+    </div>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════
+     MODAL DE DETALLES DEL PROYECTO
+════════════════════════════════════════════════════════ -->
+<div id="modal-backdrop" class="hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title"
+     onclick="handleBackdropClick(event)">
+  <div class="modal-box rounded-3xl w-full max-w-lg flex flex-col shadow-2xl" onclick="event.stopPropagation()">
+    <!-- Imagen -->
+    <div class="relative h-48 rounded-t-3xl overflow-hidden bg-slate-900">
+      <img id="modal-img" src="" alt="" class="w-full h-full object-cover" loading="lazy" />
+      <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.6), transparent)"></div>
+      <button onclick="closeModal()" aria-label="Cerrar modal"
+              class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 text-white hover:bg-black/75 flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-white">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <span id="modal-badge" class="absolute bottom-3 left-4 text-[10px] font-bold px-2.5 py-1 rounded-full border"></span>
+    </div>
+    <!-- Cuerpo -->
+    <div class="modal-body p-6 space-y-4">
+      <div>
+        <div id="modal-cat" class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#06B6D4"></div>
+        <h3 id="modal-title" class="text-2xl font-extrabold text-strong"></h3>
+        <p id="modal-expo" class="text-xs text-muted mt-0.5"></p>
+      </div>
+      <div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-muted mb-1.5">Descripción</div>
+        <p id="modal-desc" class="text-sm text-body leading-relaxed"></p>
+      </div>
+      <div>
+        <div class="text-[11px] font-bold uppercase tracking-wider text-muted mb-2">Tecnologías</div>
+        <div id="modal-tags" class="flex flex-wrap gap-2"></div>
+      </div>
+    </div>
+    <!-- Footer modal -->
+    <div class="px-6 py-4 border-t divider flex justify-end">
+      <button onclick="closeModal()" class="btn-primary-dark px-5 py-2.5 text-sm">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     T-BOT: WIDGET FLOTANTE FIJO (EVA style, siempre visible)
+════════════════════════════════════════════════════════ -->
+<div id="tbot-widget" aria-label="T-Bot mascota interactiva">
+
+  <!-- Burbuja de diálogo -->
+  <div id="tbot-bubble" class="hidden">
+    <span id="tbot-text">¡Hola! Soy <strong>T-Bot</strong>. Hacé clic en mí para un tip del evento.</span>
+  </div>
+
+  <!-- Botón-robot -->
+  <button id="tbot-btn" onclick="tbotClick()" aria-label="Interactuar con T-Bot, mascota de ITecnoFuturo" title="T-Bot — Mascota de ITecnoFuturo">
+    <!-- SVG Robot estilo EVA: blanco, minimalista, futurista -->
+    <svg viewBox="0 0 68 68" width="42" height="42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Antena -->
+      <line x1="34" y1="4" x2="34" y2="13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="34" cy="3" r="2.5" fill="#06B6D4"/>
+      <!-- Cabeza -->
+      <rect x="14" y="13" width="40" height="26" rx="10" fill="white" opacity="0.95"/>
+      <!-- Ojos LED -->
+      <ellipse id="tbot-eye-l" cx="25" cy="26" rx="5" ry="5.5" fill="#6366F1"/>
+      <circle cx="26.5" cy="24.5" r="1.5" fill="white" opacity="0.8"/>
+      <ellipse id="tbot-eye-r" cx="43" cy="26" rx="5" ry="5.5" fill="#6366F1"/>
+      <circle cx="44.5" cy="24.5" r="1.5" fill="white" opacity="0.8"/>
+      <!-- Boca / smile line -->
+      <path d="M27 33 Q34 37 41 33" stroke="#334155" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <!-- Orejas / laterales -->
+      <rect x="10" y="18" width="5" height="12" rx="2.5" fill="white" opacity="0.7"/>
+      <rect x="53" y="18" width="5" height="12" rx="2.5" fill="white" opacity="0.7"/>
+      <!-- Cuello -->
+      <rect x="28" y="39" width="12" height="5" rx="2" fill="white" opacity="0.6"/>
+      <!-- Cuerpo -->
+      <rect x="16" y="44" width="36" height="22" rx="8" fill="white" opacity="0.92"/>
+      <!-- Pecho: detalle badge ITec -->
+      <rect x="23" y="50" width="22" height="10" rx="4" fill="#6366F1" opacity="0.2"/>
+      <text x="34" y="57.5" text-anchor="middle" font-size="4.5" font-family="Inter,sans-serif" font-weight="700" fill="#6366F1" opacity="0.9">ITec 2026</text>
+      <!-- Brazos -->
+      <rect id="tbot-arm-l" x="5"  y="46" width="10" height="16" rx="5" fill="white" opacity="0.75"/>
+      <rect id="tbot-arm-r" x="53" y="46" width="10" height="16" rx="5" fill="white" opacity="0.75"/>
+    </svg>
+  </button>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     JAVASCRIPT PRINCIPAL
+════════════════════════════════════════════════════════ -->
+<script>
+/* ══════════════════════════════════════════════════════════
+   DATOS DEL PROYECTO
+   REGLA: descripcionCorta es el INICIO literal de descripcionLarga.
+   El usuario verá en la card el comienzo del texto que encontrará
+   completo en el modal.
+══════════════════════════════════════════════════════════ */
+const PROYECTOS = [
+  {
+    id: 'domotica-home',
+    nombre: 'DomoticHome IA',
+    categoria: 'domotica',
+    categoriaLabel: 'IA / Domótica',
+    expositor: 'Laboratorio de Domótica Aplicada — ITec',
+    estado: 'Demo en vivo',
+    estadoClass: 'badge-demo',
+    descripcionCorta: 'Sistema experimental que combina procesamiento de lenguaje natural con domótica inteligente para controlar la iluminación, climatización y seguridad del hogar mediante comandos de voz…',
+    descripcionLarga: 'Sistema experimental que combina procesamiento de lenguaje natural con domótica inteligente para controlar la iluminación, climatización y seguridad del hogar mediante comandos de voz. A diferencia de los asistentes comerciales, DomoticHome IA funciona completamente de forma local, sin enviar ningún audio a la nube, priorizando la privacidad de la familia. El prototipo incluye cuatro nodos IoT distribuidos por una habitación modelo.',
+    tecnologias: ['Procesamiento de Voz', 'IoT', 'Microcontroladores ESP32', 'Privacidad Local'],
+    imagen: 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'atlas-assist',
+    nombre: 'Atlas Assist',
+    categoria: 'robotica',
+    categoriaLabel: 'Robótica',
+    expositor: 'Equipo de Mecatrónica Experimental',
+    estado: 'Prototipo',
+    estadoClass: 'badge-proto',
+    descripcionCorta: 'Robot doméstico experimental que utiliza sensores LIDAR y cinemática inversa para navegar de forma autónoma y transportar objetos dentro de una vivienda u oficina…',
+    descripcionLarga: 'Robot doméstico experimental que utiliza sensores LIDAR y cinemática inversa para navegar de forma autónoma y transportar objetos dentro de una vivienda u oficina. Puede esquivar obstáculos en tiempo real, reconocer zonas habilitadas y llevar suministros ligeros a personas con movilidad reducida. El prototipo actual alcanza velocidades de hasta 0.4 m/s en superficies planas.',
+    tecnologias: ['LIDAR 2D', 'Cinemática Inversa', 'Motores Paso a Paso', 'ROS-like Navegación'],
+    imagen: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'mecahand',
+    nombre: 'MecaHand',
+    categoria: 'robotica',
+    categoriaLabel: 'Robótica Asistiva',
+    expositor: 'Grupo de Bioingeniería ITec',
+    estado: 'Demo en vivo',
+    estadoClass: 'badge-demo',
+    descripcionCorta: 'Prótesis robótica impresa en 3D que captura señales electromiográficas del antebrazo y las convierte en movimientos de agarre con articulaciones elásticas independientes…',
+    descripcionLarga: 'Prótesis robótica impresa en 3D que captura señales electromiográficas del antebrazo y las convierte en movimientos de agarre con articulaciones elásticas independientes. El sistema cuenta con cinco dedos accionados por cuatro canales de señal EMG, lo que permite realizar prensión de pinza, prensión palmar y gesto de punto. El coste de los materiales es significativamente menor al de prótesis comerciales equivalentes.',
+    tecnologias: ['Sensores EMG', 'Impresión 3D PLA', 'Servomotores 9g', 'Diseño Ergonómico'],
+    imagen: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'visionguard',
+    nombre: 'VisionGuard AI',
+    categoria: 'ia',
+    categoriaLabel: 'IA / Visión Artificial',
+    expositor: 'Cátedra de Visión por Computadora',
+    estado: 'Exhibición',
+    estadoClass: 'badge-exhib',
+    descripcionCorta: 'Sistema que analiza el video de una cámara fija a 30 FPS para verificar si los operarios de un laboratorio llevan los elementos de protección personal reglamentarios…',
+    descripcionLarga: 'Sistema que analiza el video de una cámara fija a 30 FPS para verificar si los operarios de un laboratorio llevan los elementos de protección personal reglamentarios (gafas, casco y chaleco reflectante). Cuando detecta una infracción, emite una alerta visual y audible. Toda la inferencia se realiza en el borde (edge computing), sin transmitir imágenes a un servidor externo.',
+    tecnologias: ['Redes Convolucionales', 'OpenCV', 'Edge Inference', 'Detección de EPP'],
+    imagen: 'https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'autofactory',
+    nombre: 'AutoFactory Lab',
+    categoria: 'automatizacion',
+    categoriaLabel: 'Automatización Industrial',
+    expositor: 'Laboratorio de Control y PLC',
+    estado: 'Demo en vivo',
+    estadoClass: 'badge-demo',
+    descripcionCorta: 'Línea de producción a escala reducida que combina sensores ópticos y neumáticos para clasificar piezas por color y peso, descartando defectuosas con un eyector neumático…',
+    descripcionLarga: 'Línea de producción a escala reducida que combina sensores ópticos y neumáticos para clasificar piezas por color y peso, descartando defectuosas con un eyector neumático mientras un brazo clasificador apila las aprobadas en pallets. El sistema registra telemetría en tiempo real: cantidad de piezas procesadas, tasa de rechazo y tiempo de ciclo. La pantalla HMI permite ajustar parámetros sin detener la línea.',
+    tecnologias: ['PLC Controlado', 'Sensores Ópticos', 'Neumática Industrial', 'HMI + Telemetría'],
+    imagen: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'neuracore',
+    nombre: 'NeuraCore',
+    categoria: 'ia',
+    categoriaLabel: 'Inteligencia Artificial',
+    expositor: 'Equipo de Ciencia de Datos',
+    estado: 'Prototipo',
+    estadoClass: 'badge-proto',
+    descripcionCorta: 'Modelo predictivo que cruza datos meteorológicos locales con curvas de carga eléctrica del Campus ITec para pronosticar picos de consumo y programar el encendido eficiente de climatizadores…',
+    descripcionLarga: 'Modelo predictivo que cruza datos meteorológicos locales con curvas de carga eléctrica del Campus ITec para pronosticar picos de consumo y programar el encendido eficiente de climatizadores. En la fase de prueba logró reducir la demanda máxima en un 28% durante cinco semanas consecutivas. El dashboard interactivo muestra el ahorro proyectado en tiempo real y permite comparar distintas estrategias de programación.',
+    tecnologias: ['Series Temporales', 'Modelos LSTM', 'Dashboard Interactivo', 'APIs Meteorológicas'],
+    imagen: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80'
+  }
+];
+
+const AGENDA = {
+  1: [
+    { hora: '09:30', titulo: 'Apertura Oficial e Inauguración', lugar: 'Auditorio Central' },
+    { hora: '11:00', titulo: 'Demo en Vivo: MecaHand — Robótica Asistiva', lugar: 'Laboratorio 1' },
+    { hora: '14:30', titulo: 'Panel: El Futuro de la IA en la Educación Técnica', lugar: 'Aula Magna' },
+    { hora: '17:00', titulo: 'Demostración: DomoticHome IA en Entorno Real', lugar: 'Espacio Domótica' },
+  ],
+  2: [
+    { hora: '10:30', titulo: 'Conferencia: Visión Artificial en la Industria', lugar: 'Auditorio Central' },
+    { hora: '12:00', titulo: 'Taller Práctico: Armado de Sensores IoT', lugar: 'Laboratorio 2' },
+    { hora: '15:00', titulo: 'Desafío AutoFactory: Carrera de Clasificación', lugar: 'Nave Industrial' },
+    { hora: '17:30', titulo: 'Cierre, Diplomas y Votación del Público', lugar: 'Campus Central' },
+  ]
+};
+
+const TBOT_TIPS = [
+  'No te pierdas la demo en vivo de <strong>MecaHand</strong> en el Laboratorio 1 el Día 1.',
+  '<strong>DomoticHome IA</strong> funciona 100 % local, sin subir audios a la nube.',
+  'Podés ver la línea de producción de <strong>AutoFactory Lab</strong> en la Nave Industrial el Día 2.',
+  'Completá el formulario de inscripción para obtener tu <strong>Pase Digital</strong> oficial.',
+  'El modelo <strong>NeuraCore</strong> redujo el consumo eléctrico del Campus un 28 % en pruebas.',
+];
+
+/* ── Estado local ────────────────────────────────── */
+let currentSection = 'inicio';
+let currentFilter  = 'todos';
+let currentSearch  = '';
+let currentAgenda  = 1;
+let tbotTipIndex   = 0;
+let tbotBubbleTimer = null;
+
+/* ══════════════════════════════════════════════════
+   SPA NAVIGATION
+══════════════════════════════════════════════════ */
+function showSection(id) {
+  // Ocultar todas
+  document.querySelectorAll('.spa-section').forEach(s => s.classList.remove('active'));
+  // Mostrar la elegida
+  document.getElementById('sec-' + id).classList.add('active');
+
+  // Actualizar nav links
+  ['inicio','catalogo','inscripcion'].forEach(s => {
+    const el = document.getElementById('nav-' + s);
+    if (!el) return;
+    el.classList.toggle('active-nav', s === id);
+  });
+
+  currentSection = id;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Renderizar catálogo al entrar
+  if (id === 'catalogo') renderCards();
+}
+
+function toggleMobile() {
+  const menu = document.getElementById('mobile-menu');
+  const btn  = document.getElementById('hamburger-btn');
+  const open = !menu.classList.contains('hidden');
+  menu.classList.toggle('hidden', open);
+  btn.setAttribute('aria-expanded', String(!open));
+}
+function closeMobile() {
+  document.getElementById('mobile-menu').classList.add('hidden');
+  document.getElementById('hamburger-btn').setAttribute('aria-expanded','false');
+}
+
+/* ══════════════════════════════════════════════════
+   TEMA CLARO / OSCURO
+══════════════════════════════════════════════════ */
+function toggleTheme() {
+  const html  = document.documentElement;
+  const isDark = html.classList.contains('dark');
+  if (isDark) {
+    html.classList.remove('dark');
+    html.classList.add('light');
+    localStorage.setItem('itec-theme','light');
+  } else {
+    html.classList.remove('light');
+    html.classList.add('dark');
+    localStorage.setItem('itec-theme','dark');
+  }
+  updateThemeIcons();
+  if (typeof window._updateCtaBorder === 'function') window._updateCtaBorder();
+}
+function updateThemeIcons() {
+  const isDark = document.documentElement.classList.contains('dark');
+  document.getElementById('icon-sun').classList.toggle('hidden',  isDark);
+  document.getElementById('icon-moon').classList.toggle('hidden', !isDark);
+}
+
+/* ══════════════════════════════════════════════════
+   CATÁLOGO: RENDERIZADO CON 4 ESTADOS UI
+══════════════════════════════════════════════════ */
+function filterCards() {
+  currentSearch = document.getElementById('search-input').value.toLowerCase().trim();
+  renderCards();
+}
+
+function setChip(btn, cat) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = cat;
+  renderCards();
+}
+
+function resetFilter() {
+  document.getElementById('search-input').value = '';
+  currentSearch = '';
+  currentFilter = 'todos';
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.chip')[0].classList.add('active');
+  renderCards();
+}
+
+function renderCards() {
+  const grid  = document.getElementById('cards-grid');
+  const empty = document.getElementById('empty-state');
+
+  const filtered = PROYECTOS.filter(p => {
+    const matchCat  = currentFilter === 'todos' || p.categoria === currentFilter;
+    const matchText = !currentSearch ||
+      p.nombre.toLowerCase().includes(currentSearch) ||
+      p.expositor.toLowerCase().includes(currentSearch) ||
+      p.descripcionCorta.toLowerCase().includes(currentSearch);
+    return matchCat && matchText;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  grid.innerHTML = filtered.map(p => `
+    <article class="project-card" onclick="openModal('${p.id}')">
+      <!-- Imagen -->
+      <div class="relative h-44 overflow-hidden bg-slate-900">
+        <img src="${p.imagen}" alt="Imagen del proyecto ${p.nombre}"
+             loading="lazy"
+             onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=40'"
+             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(0,0,0,0.5),transparent)"></div>
+        <span class="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${p.estadoClass}">${p.estado}</span>
+      </div>
+      <!-- Cuerpo -->
+      <div class="p-5">
+        <div class="text-[10px] font-bold uppercase tracking-widest text-muted mb-1">${p.categoriaLabel}</div>
+        <h3 class="font-extrabold text-base text-strong mb-1">${p.nombre}</h3>
+        <p class="text-xs text-muted mb-0.5">Por: ${p.expositor}</p>
+        <!-- descripcionCorta = inicio literal de descripcionLarga -->
+        <p class="text-sm text-body mt-2 leading-relaxed line-clamp-3">${p.descripcionCorta}</p>
+        <div class="mt-4 pt-4 border-t divider flex justify-between items-center">
+          <span class="text-[11px] text-muted">Ficha técnica completa</span>
+          <button type="button" onclick="event.stopPropagation(); openModal('${p.id}');"
+                  class="btn-card-detail text-xs font-bold px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+            Ver detalles →
+          </button>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════════ */
+function openModal(id) {
+  const p = PROYECTOS.find(x => x.id === id);
+  if (!p) return;
+
+  document.getElementById('modal-img').src   = p.imagen;
+  document.getElementById('modal-img').alt   = `Demostración de ${p.nombre}`;
+  document.getElementById('modal-cat').textContent   = p.categoriaLabel;
+  document.getElementById('modal-title').textContent = p.nombre;
+  document.getElementById('modal-expo').textContent  = 'Expositor: ' + p.expositor;
+  document.getElementById('modal-desc').textContent  = p.descripcionLarga;
+
+  const badge = document.getElementById('modal-badge');
+  badge.textContent  = p.estado;
+  badge.className    = `absolute bottom-3 left-4 text-[10px] font-bold px-2.5 py-1 rounded-full border ${p.estadoClass}`;
+
+  document.getElementById('modal-tags').innerHTML =
+    p.tecnologias.map(t =>
+      `<span class="text-[11px] px-2.5 py-1 rounded-lg font-medium surface text-muted border divider">${t}</span>`
+    ).join('');
+
+  document.getElementById('modal-backdrop').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function handleBackdropClick(e) {
+  if (e.target === document.getElementById('modal-backdrop')) closeModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ══════════════════════════════════════════════════
+   AGENDA TABS
+══════════════════════════════════════════════════ */
+function setAgendaTab(day) {
+  currentAgenda = day;
+  document.getElementById('tab1').classList.toggle('active', day === 1);
+  document.getElementById('tab2').classList.toggle('active', day === 2);
+  renderAgenda();
+}
+
+function renderAgenda() {
+  const list  = document.getElementById('agenda-list');
+  const items = AGENDA[currentAgenda];
+  list.innerHTML = items.map(a => `
+    <div class="agenda-item rounded-xl px-4 py-3 flex items-start gap-3">
+      <span class="text-xs font-mono font-bold shrink-0 mt-0.5" style="color:#06B6D4">${a.hora}</span>
+      <div>
+        <div class="text-sm font-semibold text-strong">${a.titulo}</div>
+        <div class="text-xs text-muted">${a.lugar}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════════════
+   FORMULARIO DE INSCRIPCIÓN
+══════════════════════════════════════════════════ */
+function submitForm(e) {
+  e.preventDefault();
+  let ok = true;
+
+  // Validar nombre
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const errN   = document.getElementById('err-nombre');
+  if (nombre.length < 3) { errN.classList.remove('hidden'); ok = false; }
+  else                     errN.classList.add('hidden');
+
+  // Validar email
+  const email = document.getElementById('f-email').value.trim();
+  const errE  = document.getElementById('err-email');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errE.classList.remove('hidden'); ok = false; }
+  else errE.classList.add('hidden');
+
+  // Validar términos
+  const terms = document.getElementById('f-terms').checked;
+  const errT  = document.getElementById('err-terms');
+  if (!terms) { errT.classList.remove('hidden'); ok = false; }
+  else         errT.classList.add('hidden');
+
+  if (!ok) return;
+
+  const tipo      = document.getElementById('f-tipo').value;
+  const cantidad  = document.getElementById('f-cant').value;
+  const interes   = document.getElementById('f-interes').value;
+  const idFicticio = 'ITEC-' + (Math.floor(1000 + Math.random() * 9000));
+
+  document.getElementById('pase-nombre').textContent  = nombre;
+  document.getElementById('pase-detalle').textContent = `${tipo} · ${cantidad} asistente(s) · ${interes}`;
+  document.getElementById('pase-id').textContent      = idFicticio;
+
+  document.getElementById('registration-form').classList.add('hidden');
+  document.getElementById('form-success').classList.remove('hidden');
+  document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function resetForm() {
+  document.getElementById('registration-form').reset();
+  document.getElementById('registration-form').classList.remove('hidden');
+  document.getElementById('form-success').classList.add('hidden');
+  ['err-nombre','err-email','err-terms'].forEach(id =>
+    document.getElementById(id).classList.add('hidden'));
+}
+
+/* ══════════════════════════════════════════════════
+   T-BOT WIDGET — Lógica del asistente flotante
+══════════════════════════════════════════════════ */
+function tbotShowBubble(texto) {
+  const bubble = document.getElementById('tbot-bubble');
+  const span   = document.getElementById('tbot-text');
+  span.innerHTML = texto;
+  bubble.classList.remove('hidden');
+
+  // Auto-ocultar después de 5 segundos
+  clearTimeout(tbotBubbleTimer);
+  tbotBubbleTimer = setTimeout(() => bubble.classList.add('hidden'), 5000);
+}
+
+function tbotClick() {
+  const btn = document.getElementById('tbot-btn');
+
+  // Animación de movimiento del robot
+  btn.classList.remove('tbot-talking', 'tbot-waving');
+  // Alternar entre dos animaciones
+  const anim = tbotTipIndex % 2 === 0 ? 'tbot-talking' : 'tbot-waving';
+  // Forzar reflow para que la animación se reinicie
+  void btn.offsetWidth;
+  btn.classList.add(anim);
+  btn.addEventListener('animationend', () => btn.classList.remove(anim), { once: true });
+
+  // Mostrar tip
+  tbotShowBubble(TBOT_TIPS[tbotTipIndex % TBOT_TIPS.length]);
+  tbotTipIndex++;
+}
+
+// Mostrar burbuja de bienvenida al cargar (con delay)
+window.addEventListener('load', () => {
+  setTimeout(() => tbotShowBubble('¡Hola! Soy <strong>T-Bot</strong>, tu guía en ITecnoFuturo. Hacé clic para tips del evento 🚀'), 1800);
+});
+
+/* ══════════════════════════════════════════════════
+   INICIALIZACIÓN
+══════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  updateThemeIcons();
+  renderAgenda();
+  renderCards(); // Asegurar catálogo pre-renderizado
+
+  // Garantizar que el modal arranque cerrado
+  const modal = document.getElementById('modal-backdrop');
+  if (modal) modal.classList.add('hidden');
+
+  // Estilo del botón secundario según tema
+  const updateCtaBorder = () => {
+    const ctaSecondary = document.getElementById('cta-inscripcion');
+    if (ctaSecondary) {
+      const isDark = document.documentElement.classList.contains('dark');
+      ctaSecondary.style.borderColor = isDark ? '#334155' : '#C0392B';
+    }
+  };
+  updateCtaBorder();
+  window._updateCtaBorder = updateCtaBorder;
+});
+</script>
+
+</body>
+</html>
