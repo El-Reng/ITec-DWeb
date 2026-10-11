@@ -1,89 +1,76 @@
-## Reto 5 | El Gran Showdown de los Frameworks CSS
+# Seminario Antigravity — ITecnoFuturo 🪐
+
+> **Materia**: Diseño y Desarrollo Web — Sede Campus ITec Río Cuarto  
+> **Seminario**: Desarrollo Agéntico con Google Antigravity 2.0  
+> **Metodología**: Spec-Driven Development (Gentle-AI) & Antigravity Operating System (AGY-OS)  
+> **Referencia Oficial**: [Guía del Estudiante — Seminario Antigravity](https://msambrenil.github.io/Seminario-Antigravity/)
 
 ---
 
-## **Trabajo de Investigación, Producción Comparativa y Exposición Grupal**
+## 🎯 Contexto y Objetivo del Seminario
 
-Ya habiendo estudiado las bases de la Clase 8 sobre qué es un Framework CSS y cómo interactúa con nuestro código a través de la cascada, llegó el momento de poner ese conocimiento a prueba en un entorno real de desarrollo\!
+El **Seminario de Google Antigravity 2.0** introduce un cambio de paradigma en la construcción web: transicionar del desarrollo manual tradicional hacia el rol de **Director Técnico y Arquitecto de Software Agéntico**. 
 
-### **🎯 Objetivo del Reto**
+A través de un flujo estructurado de 7 clases y el estándar **Spec-Driven Development (SDD)** inspirado en [Gentle-AI](https://github.com/Gentleman-Programming/gentle-ai), se concibió, especificó y maquetó una **Single Page Application (SPA)** autocontenida para un evento tecnológico ficticio denominado **ITecnoFuturo**.
 
-Explorar dos frameworks CSS diferentes, comparar sus filosofías de trabajo y producir un mismo diseño base utilizando ambos entornos por separado. El propósito es demostrar de forma práctica cómo se puede lograr una interfaz idéntica utilizando herramientas con lógicas de construcción completamente distintas (Componentes vs. Utilidades).
+---
 
-* **Modalidad:** Trabajo individual.
+## 🚀 Proyecto: ITecnoFuturo 2026
 
-* **Asignación:** Cada uno tiene asignado Tailwind de forma universal, sumado a un segundo framework alternativo del ecosistema actual.
+**ITecnoFuturo** es la web promocional para una gran exposición de innovación tecnológica a realizarse en la Sede Campus del Instituto Tecnológico ITec de Río Cuarto. 
 
-* **Exposición:** Presentación técnica presencial de un máximo de 20 minutos por reloj.
+### Características Principales:
+1. **SPA Autocontenida (Archivo Único)**:
+   - Todo el sitio reside en `index.html`, sin necesidad de transpiladores, dependencias de Node.js ni servidores externos.
+   - 3 secciones principales con navegación instantánea sin recarga: **Inicio**, **Catálogo de Proyectos** e **Inscripción y Agenda**.
+2. **Catálogo & Fichas Modales Accesibles**:
+   - 6 proyectos canónicos de innovación: *DomoticHome IA*, *Atlas Assist*, *MecaHand*, *VisionGuard AI*, *AutoFactory Lab* y *NeuraCore*.
+   - Coherencia textual estricta: el texto visible de la tarjeta es el comienzo exacto de la ficha técnica extendida.
+   - Modal interactivo con bloqueo de scroll y cierre por botón `X`, botón *Cerrar*, clic en backdrop o tecla `Escape`.
+3. **Asistente Mascota T-Bot Persistente (Overlay Fixed)**:
+   - Widget flotante fijo en pantalla (`position: fixed`) estilo EVA (minimalista y blanco) sobre base contrastante.
+   - Microinteracciones: animación de flotación constante (`floatY`), reacciones al clic (`botTalk` / `botWave`) y burbuja de tips tecnológicos rotativos.
+4. **Paleta Dual con Identidad Institucional**:
+   - **Modo Oscuro**: Fondo profundo `#080B14`, tarjetas `#111827`, texto `#F1F5F9` y acentos futuristas en índigo y cian.
+   - **Modo Claro**: Fondo cálido `#FFF8F7` con botones y acentos unificados en **rojo institucional ITec** (`#C0392B` / `#E74C3C`).
+   - Detección temprana anti-FOUC y persistencia del tema en `localStorage`.
+5. **Formulario con Estados UI & Credencial Digital**:
+   - Validación reactiva de campos obligatorios.
+   - Estado Success que genera un **Pase Digital Oficial** con ID ficticio único y código QR vectorial.
 
-**Prohibido usar NPM o Terminal:** Al investigar los frameworks asignados, verán que las documentaciones oficiales sugieren instalarlos usando comandos como npm install. Ignoren esa sección. Para este reto, es **obligatorio** realizar la conexión de ambos frameworks utilizando exclusivamente el método **CDN (etiquetas \<link\> o \<script\> de internet)** directo en el HTML.
+---
 
-## **Parte 1: Investigación Teórica y Análisis Crítico**
+## 📂 Estructura de Entregables del Repositorio
 
-Cada uno debe realizar una investigación exhaustiva del framework alternativo asignado (usando Tailwind como punto de comparación constante) y plasmar los hallazgos en una presentación visual (Formato sugerido: PDF, Diapositivas o Canva). La defensa debe cubrir los siguientes puntos técnicos:
+Siguiendo las pautas de entrega del seminario, esta rama reúne todos los artefactos requeridos:
 
-* **Ficha Técnica Básica:** Origen, creador, sitio web oficial y versión estable actual.
+```text
+├── index.html                   # SPA completa y funcional (HTML5 + Tailwind CSS v3 CDN + Vanilla JS)
+├── REPORTE_VERIFICACION_SDD.md  # Reporte formal de verificación técnica y cumplimiento de la Definition of Done
+├── GEMINI.md                    # Conector maestro de contexto del agente Antigravity
+├── docs/
+│   └── contexto/                # Suite de Contexto Vivo (Master Context - Estándar SDD)
+│       ├── arquitectura.md      # Arquitectura modular, stack aprobado y modelo de datos canónico
+│       ├── convenciones.md      # Guía de estilos, tokens de color (claro/oscuro) y accesibilidad
+│       ├── decisiones.md        # Registro de decisiones de arquitectura (ADR-001 al ADR-006)
+│       ├── glosario.md          # Diccionario de términos de negocio y componentes UI
+│       ├── flujo-de-trabajo.md  # Fases de desarrollo SDD y los 12 criterios de la Definition of Done
+│       ├── errores-conocidos.md # Catálogo de prevención de gotchas y desbordes de maquetado
+│       └── memoria.md           # Memoria continua Engram (historial persistente de sesiones)
+└── video-demo.mp4               # Demostración en video (2-3 min) del funcionamiento y modos claro/oscuro
+```
 
-* **Filosofía de Diseño:** Se maneja por componentes cerrados (ej. Bootstrap, Bulma) o mediante clases utilitarias/atómicas (ej. Tailwind, UnoCSS)?
+---
 
-* **Curva de Aprendizaje y Flexibilidad:** Qué tan amigable es la documentación para alguien que recién empieza y qué tan complejo resulta alterar sus colores y tamaños por defecto.
+## 🛠️ Stack Tecnológico Utilizado
 
-* **Infraestructura:** Tamaño de la comunidad, cantidad de recursos/plantillas disponibles en la web y compatibilidad declarada con navegadores modernos.
+- **HTML5 Semántico**: `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`.
+- **Tailwind CSS v3 (CDN)**: Configuración inyectada con paleta personalizada y `darkMode: 'class'`.
+- **JavaScript Vanilla (ES6+)**: Gestión reactiva del DOM, filtros, agenda interactiva y modales sin librerías externas.
+- **Tipografía**: *Inter* (Google Fonts).
 
-* **Análisis Comparativo (Sintaxis):** Mostrar un bloque de código de ejemplo de cómo estructuran ambos entornos un mismo elemento básico (un Botón, una Tarjeta de producto o una Barra de navegación).
+---
 
-* **Experiencia de Usuario (DevX):** Una reflexión sobre cómo se sintieron trabajando bajo la lógica de cada herramienta.
+## 🎖️ Metodología y Calidad (DoD)
 
-## **Parte 2: Producción Comparativa de Código**
-
-Deberán desarrollar **el mismo ejemplo de una web** construyendo dos versiones desde cero absolutas (una carpeta totalmente independiente para cada entorno). No se permite reciclar hojas de estilo entre proyectos.
-
-### **Estructura Obligatoria de la Interfaz:**
-
-1. **Encabezado (Header):** Contenedor semántico con el logotipo del producto y un menú de navegación funcional.
-
-2. **Sección Hero:** Una imagen principal destacada que abarque el ancho del layout o actúe como portada del producto.
-
-3. **Cuerpo de Contenido:** Una sección de texto con un título descriptivo, un párrafo introductorio y una grilla compuesta por **3 Cards (Ejemplo tarjetas de productos)**.
-
-4. **Llamado a la Acción:** Un botón interactivo destacado (debe incluir la micro-interacción hover aprendida en la Clase 7).
-
-5. **Pie de Página (Footer):** Barra de cierre con datos de copyright.
-
-6. **Página detalle del producto, cuando el usuario entra en un producto** (Mostrar toda la info del producto como se hace en cualquier tienda digital)
-
-### **Directivas de Maquetación:**
-
-* **Uso de Grillas:** Ambas versiones deben implementar obligatoriamente el sistema de filas y columnas nativo de cada uno de los frameworks para ordenar todo el layout.
-
-* **Comportamiento Adaptable:** El diseño debe ser mobile first nativo. Al agrandar la pantalla, los frameworks deben encargarse de reordenar y apilar los elementos correctamente.
-
-* **Mantenimiento de Identidad Visual:** Las dos páginas deben lucir prácticamente idénticas al ojo del usuario. 
-
-## **Estructura del Repositorio de Entrega**
-
-La entrega final del proyecto deberá respetar estrictamente el siguiente árbol de carpetas. Carpetas mal organizadas restarán puntos de entrega completa:
-
-reto5-apellido/  
-├── version-con-Tailwind/  
-│   ├── index.html  
-│   ├── detalle\_producto.html  
-│   ├── css/  
-│   │   └── estilos.css  
-│   └── img/  
-├── version-con-otro-framework/  
-│   ├── index.html  
-│   ├── detalle\_producto.html  
-│   ├── css/  
-│   │   └── estilos.css  
-│   └── img/  
-├── presentacion-apellido.pdf  
-└── Google Doc con la investigación o un README.txt (Documento de texto breve indicando los nombres de los integrantes)
-
-## **Asignación de Frameworks**
-
-| Alumno | Frameworks Asignados |
-| ----- | ----- |
-| **Leo Rojo** | [Tailwind](https://tailwindcss.com/), [Bulma](https://bulma.io/) |
-
-🏆 **Éxitos en la investigación\!**
+El desarrollo cumplió rigurosamente con los 12 criterios de la **Definition of Done (DoD)** y la verificación de los 4 estados de interfaz (**Loading**, **Empty**, **Error** y **Success**), garantizando cero errores de sintaxis en consola y una experiencia de usuario sólida y accesible.
